@@ -64,21 +64,21 @@ int plateau(){
 	
     SDL_Init(SDL_INIT_VIDEO);// Initialisation de la SDL
  
-    ecran= SDL_SetVideoMode(2000, 1300, 32, SDL_HWSURFACE|SDL_RESIZABLE); // chargement d'une fenêtre dans l'espace écran
-	plateau= SDL_CreateRGBSurface(SDL_HWSURFACE,900,900,32,0,0,0,0);	
+    ecran= SDL_SetVideoMode(2000, 1300, 32, SDL_HWSURFACE|SDL_RESIZABLE); // chargement d'une fenêtre dans l'espace écran	
 
 	for(i=0;i<8;i++){
-		lignes[i]= SDL_CreateRGBSurface(SDL_HWSURFACE,900,6,32,0,0,0,0);
-		colonnes[i]= SDL_CreateRGBSurface(SDL_HWSURFACE,6,900,32,0,0,0,0);
+		lignes[i]= SDL_CreateRGBSurface(SDL_HWSURFACE,900,3,32,0,0,0,0);
+		colonnes[i]= SDL_CreateRGBSurface(SDL_HWSURFACE,3,900,32,0,0,0,0);
 		positionsLignes[i].x=0;
 		positionsLignes[i].y=(i+1)*100;
 		positionsColonnes[i].x=(i+1)*100;
 		positionsColonnes[i].y=0;
-		SDL_FillRect(lignes[i],NULL,SDL_MapRGB(lignes[i]->format,255,255,255));
-		SDL_FillRect(colonnes[i],NULL,SDL_MapRGB(lignes[i]->format,255,255,255));
+		SDL_FillRect(lignes[i],NULL,SDL_MapRGB(lignes[i]->format,0,0,0));
+		SDL_FillRect(colonnes[i],NULL,SDL_MapRGB(lignes[i]->format,0,0,0));
 	}
 
 	imageDeFond= IMG_Load("ponton2.jpg");
+	plateau = IMG_Load("bois.jpg");
 
 	for(i=0;i<TailleLigne;i++){
 
@@ -87,10 +87,6 @@ int plateau(){
 		blancL1[i] = IMG_Load("blanche_transparent.png");
 		blancL2[i] = IMG_Load("blanche_transparent.png");
 	}
-
-
-
-	SDL_FillRect(plateau,NULL,SDL_MapRGB(plateau->format,200,173,127));
 
 
 	if(ecran==NULL){
