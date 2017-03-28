@@ -2,12 +2,21 @@
 #include <stdio.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
+#define Xplateau 25
+#define Yplateau 75
+#define TailleCase 100
+#define TailleMatrice 81
+#define NbPions 36
+
+
+
 #define TailleLigne 9
 #define NbLignes 8
+#define NbPions  36
 
 void pause();
 
-int plateau(){
+int dessiner(){
 
 	int i=0;
 
@@ -17,12 +26,11 @@ int plateau(){
 	SDL_Surface *plateau=NULL;
 	SDL_Surface *lignes[NbLignes]={NULL};	
 	SDL_Surface *colonnes[NbLignes]={NULL};
+	SDL_Surface *pions[NbPions]={NULL};
 
 // On s'occupe des pions
-	SDL_Surface *noirL1[TailleLigne]={NULL}; //première ligne de pions
-	SDL_Surface *noirL2[TailleLigne]={NULL}; // deuxième ligne de pions
-	SDL_Surface *blancL1[TailleLigne]={NULL}; //première ligne de pions
-	SDL_Surface *blancL2[TailleLigne]={NULL}; // deuxième ligne de pions
+	SDL_Surface *noir=NULL; //première ligne de pions
+
 
 
 	SDL_Rect positionsLignes[NbLignes];
@@ -30,12 +38,7 @@ int plateau(){
 	SDL_Rect positionImage;
 
 	SDL_Rect positionPlateau;
-	SDL_Rect positionNoirL1[TailleLigne];
-	SDL_Rect positionNoirL2[TailleLigne];
-
-
-	SDL_Rect positionBlancL1[TailleLigne];
-	SDL_Rect positionBlancL2[TailleLigne];
+	SDL_Rect positionNoir;
 
 
 
@@ -44,21 +47,8 @@ int plateau(){
 	positionPlateau.x=25; // Positions d'ancrage du plateau de jeu
 	positionPlateau.y=75;
 
-	for(i=0;i<TailleLigne;++i){
-
-		positionNoirL1[i].x=5+i*100;
-		positionNoirL1[i].y=5;
-		positionNoirL2[i].x=5+i*100;
-		positionNoirL2[i].y=105;
-
-		positionBlancL1[i].x=5+i*100;
-		positionBlancL1[i].y=705;
-		positionBlancL2[i].x=5+i*100;
-		positionBlancL2[i].y=805;
-
-	}
-
-	
+	positionNoir.x=25;
+	positionNoir.y=75;
 
  // Je crée un pointeur sur une SDL_Surface car c'est ce que SetVideoMode renvoie
 	
@@ -80,13 +70,8 @@ int plateau(){
 	imageDeFond= IMG_Load("ponton2.jpg");
 	plateau = IMG_Load("bois.jpg");
 
-	for(i=0;i<TailleLigne;i++){
 
-		noirL1[i] = IMG_Load("noire_transparent.png");
-		noirL2[i] = IMG_Load("noire_transparent.png");
-		blancL1[i] = IMG_Load("blanche_transparent.png");
-		blancL2[i] = IMG_Load("blanche_transparent.png");
-	}
+	noir = IMG_Load("noire_transparent.png");
 
 
 	if(ecran==NULL){
@@ -96,17 +81,34 @@ int plateau(){
 
 	SDL_WM_SetCaption("Watashi no Hasami Shogi. Dozoo Yorochiku", NULL);
 
-	for(i=0;i<TailleLigne;i++){
-		SDL_BlitSurface(noirL1[i],NULL,plateau,&positionNoirL1[i]);
-		SDL_BlitSurface(noirL2[i],NULL,plateau,&positionNoirL2[i]);
-		SDL_BlitSurface(blancL1[i],NULL,plateau,&positionBlancL1[i]);
-		SDL_BlitSurface(blancL2[i],NULL,plateau,&positionBlancL2[i]);
 
-	}
+int continuer =1;
 
+SDL_Event event;
+while (continuer)
 
+{
 
+    SDL_WaitEvent(&event);
 
+    switch(event.type)
+
+    {
+
+        case SDL_QUIT:
+
+            continuer = 0;
+
+            break;
+
+        case SDL_MOUSEBUTTONUP:
+
+            positionNoir.x =((event.button.x-positionPlateau.x)/100)*100+positionPlateau.x+5;
+            positionNoir.y =((event.button.y-positionPlateau.y)/100)*100+positionPlateau.y+5;
+
+            break;
+
+    }
 
 	for(i=0; i<8;i++){
 
@@ -119,20 +121,17 @@ int plateau(){
 	SDL_BlitSurface(imageDeFond,NULL,ecran,&positionImage);
 	SDL_BlitSurface(plateau,NULL,ecran,&positionPlateau);	
 
+    SDL_BlitSurface(noir, NULL, ecran, &positionNoir); /* On place le pion à sa nouvelle position */
 
+    SDL_Flip(ecran);
 
+}
 
-
-
-	SDL_Flip(ecran);
     
-    pause(); // Mise en pause du programme
+
 	SDL_FreeSurface(imageDeFond);
 
-	for(i=0;i<TailleLigne;i++){
-		SDL_FreeSurface(noirL1[i]);
-		SDL_FreeSurface(noirL2[i]);
-	}
+	SDL_FreeSurface(noir);
 
 	SDL_FreeSurface(ecran);
 
@@ -147,30 +146,18 @@ int plateau(){
  
     return EXIT_SUCCESS; // Fermeture du programme
 }
- 
 
 
 
+void main(){
+	dessiner();
 
-
- 
-int main(int argc, char *argv[]){
-
-	plateau();
 }
 
-void pause()
-{
-    int continuer = 1;
-    SDL_Event event;
- 
-    while (continuer)
-    {
-        SDL_WaitEvent(&event);
-        switch(event.type)
-        {
-            case SDL_QUIT:
-                continuer = 0;
-        }
-    }
-}
+
+// dans le jeu, faire successivement appel à la fonction déplacer puis à une fonction matrice qui retracera tout.
+
+
+
+
+
