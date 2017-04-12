@@ -25,6 +25,11 @@ typedef struct Plateau {
     Case cases[81] ;
 }Plateau ;
 
+
+void deplacer_piece(Plateau* p, int depart, int arrivee);
+
+
+
 void initialiser_plateau(Plateau* p) {
 
     int k ;
@@ -42,7 +47,13 @@ void initialiser_plateau(Plateau* p) {
     }
 }
 
-void pause();
+
+void deplacer_piece(Plateau* p, int depart, int arrivee) { //déplace une pièce depuis la position depart, jusqu'à la position arrivee
+
+            Case piece = (*p).cases[depart] ;
+            p->cases[depart] = VIDE ;
+            p->cases[arrivee] = piece ;    
+}
 
 int dessiner(Plateau* p, SDL_Surface* ecran, SDL_Surface* pions[NbPions]){
 
@@ -112,7 +123,6 @@ int dessiner(Plateau* p, SDL_Surface* ecran, SDL_Surface* pions[NbPions]){
 			positionsPions[compteur].x=((i%9)*100)+Xplateau+5;
 			positionsPions[compteur].y=((i/9)*100)+Yplateau+5;
 			compteur++;
-			printf("%d\n",compteur);
 		}
 
 		if(p->cases[i]==BLANC){
@@ -120,39 +130,10 @@ int dessiner(Plateau* p, SDL_Surface* ecran, SDL_Surface* pions[NbPions]){
 			positionsPions[compteur].x=((i%9)*100)+Xplateau+5;
 			positionsPions[compteur].y=((i/9)*100)+Yplateau+5;
 			compteur++;
-			printf("%d\n",compteur);
 		}
 
 	}
 
-
-int continuer =1;
-
-SDL_Event event;
-while (continuer)
-
-{
-
-    SDL_WaitEvent(&event);
-
-    switch(event.type)
-
-    {
-
-        case SDL_QUIT:
-
-            continuer = 0;
-
-            break;
-
-        case SDL_MOUSEBUTTONUP:
-
-            //positionNoir.x =((event.button.x-positionPlateau.x)/100)*100+positionPlateau.x+5;
-            //positionNoir.y =((event.button.y-positionPlateau.y)/100)*100+positionPlateau.y+5;
-
-            break;
-
-    }
 
 
 	for(i=0; i<8;i++){
@@ -162,10 +143,9 @@ while (continuer)
 
 	}
 
-
 	SDL_BlitSurface(imageDeFond,NULL,ecran,&positionImage);
 
-	SDL_BlitSurface(plateau,NULL,ecran,&positionPlateau);	
+	SDL_BlitSurface(plateau,NULL,ecran,&positionPlateau);
 
 	
 	for(i=0;i<NbPions;i++){
@@ -173,6 +153,60 @@ while (continuer)
 	}
 
     SDL_Flip(ecran);
+
+
+int continuer =1;
+int depart;
+int arrivee;
+
+SDL_Event clic1;
+SDL_Event clic2;
+
+
+while (continuer)
+
+{
+
+    SDL_WaitEvent(&clic1);
+
+    switch(clic1.type){
+
+        case SDL_QUIT:
+
+            continuer = 0;
+
+            break;
+
+        case SDL_MOUSEBUTTONUP:
+
+			depart= ((((clic1.button.y/100)-1)*9)+(clic1.button.x/100));
+			printf("%d\n",depart);
+			
+            break;
+
+    }
+
+
+
+	SDL_WaitEvent(&clic2);
+
+	switch(clic2.type){
+
+		case SDL_QUIT:
+						
+			continuer=0;
+
+			break;
+	
+		case SDL_MOUSEBUTTONUP:
+
+			arrivee= ((((clic2.button.y/100)-1)*9)+(clic2.button.x/100));
+			printf("%d\n",arrivee);
+			deplacer_piece(p,depart,arrivee);
+			
+			break;
+
+	}
 
 }
 
