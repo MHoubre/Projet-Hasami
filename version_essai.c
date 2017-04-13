@@ -154,7 +154,8 @@ while (continuer){
 
             break;
 
-        case SDL_MOUSEBUTTONUP:
+        case SDL_MOUSEBUTTONDOWN:
+			if (event1.button.button==SDL_BUTTON_LEFT){
 
 			x=((event1.button.x)-Xplateau)/100;
 			y=((event1.button.y)-Yplateau)/100;
@@ -168,26 +169,17 @@ while (continuer){
 
 			}
 			break;
-		}
 
-	SDL_WaitEvent(&event2);
-	
-	switch(event2.type){
-		
-		case SDL_QUIT:
-		
-			continuer = 0;
-
-			break;	
-
-		case SDL_MOUSEBUTTONUP:
-
-			positionsPions[adeplacer].x =((event2.button.x-positionPlateau.x)/100)*100+positionPlateau.x+5;
-            positionsPions[adeplacer].y =((event2.button.y-positionPlateau.y)/100)*100+positionPlateau.y+5;
+		  }else if (event1.button.button==SDL_BUTTON_RIGHT){
+			positionsPions[adeplacer].x =((event1.button.x-positionPlateau.x)/100)*100+positionPlateau.x+5;
+            positionsPions[adeplacer].y =((event1.button.y-positionPlateau.y)/100)*100+positionPlateau.y+5;
 
 			break;
 
-    }
+		}
+
+
+		}
 
 
 	for(i=0; i<8;i++){
@@ -245,8 +237,6 @@ void main(){
 
 	Plateau pla;
 	initialiser_plateau(&pla);
-	deplacer_piece(&pla, 2, 35);
-
 
 	dessiner(&pla, ecran, pions);
 
