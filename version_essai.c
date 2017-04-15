@@ -42,6 +42,24 @@ void initialiser_plateau(Plateau* p) {
     }
 }
 
+void afficher (Plateau* p){
+
+int i;
+int j;
+int k=0;
+	
+	for(j=0;j<81;j++){
+			k+=1;
+			if(k%9==0){
+				printf("%d\n",(*p).cases[k-1]);
+			}else{
+
+				printf("%d",(*p).cases[k]);
+		}
+	}		
+
+}
+
 
 void deplacer_piece(Plateau* p, int depart, int arrivee) { //déplace une pièce depuis la position depart, jusqu'à la position arrivee
 
@@ -139,9 +157,11 @@ int x;
 int y;
 int k;
 int adeplacer;
+int arrivee;
+int depart;
 
 SDL_Event event1;
-SDL_Event event2;
+
 while (continuer){
 
     SDL_WaitEvent(&event1);
@@ -162,17 +182,28 @@ while (continuer){
 
 			for(k=0;k<NbPions;k++){
 				if(((positionsPions[k].x)-(5+Xplateau))/100 == x && ((positionsPions[k].y)-(5+Yplateau))/100==y){
-					adeplacer=k;
-					printf("%d\n",k);
+					adeplacer=k;  // indice du pions à déplacer dans mon tableau contenant les positions des images
+
+
+					depart= ((((event1.button.y/100)-1)*9)+(event1.button.x/100)); // indice de départ du nombre associé au pion dans le plateau
+					//printf("%d\n",depart);
+
 				}
-//				printf("%d\n",positionsPions[k].x);
+
 
 			}
 			break;
 
 		  }else if (event1.button.button==SDL_BUTTON_RIGHT){
+			arrivee= ((((event1.button.y/100)-1)*9)+(event1.button.x/100)); // indice d'arrivée
+
+			//printf("%d\n",arrivee);
+			deplacer_piece(p,depart,arrivee); // on déplace dans la matrice avant de déplacer les images. Servira pour vérifier le coup légal.
+
 			positionsPions[adeplacer].x =((event1.button.x-positionPlateau.x)/100)*100+positionPlateau.x+5;
             positionsPions[adeplacer].y =((event1.button.y-positionPlateau.y)/100)*100+positionPlateau.y+5;
+			afficher(p);
+
 
 			break;
 
@@ -241,9 +272,6 @@ void main(){
 	dessiner(&pla, ecran, pions);
 
 }
-
-
-// dans le jeu, faire successivement appel à la fonction déplacer puis à une fonction matrice qui retracera tout.
 
 
 
