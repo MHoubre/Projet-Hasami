@@ -42,6 +42,15 @@ void initialiser_plateau(Plateau* p) {
     }
 }
 
+
+void deplacer_piece(Plateau* p, int depart, int arrivee) { //déplace une pièce depuis la position depart, jusqu'à la position arrivee
+
+            Case piece = (*p).cases[depart] ;
+            p->cases[depart] = VIDE ;
+            p->cases[arrivee] = piece ;    
+}
+
+
 void afficher (Plateau* p){
 
 int i;
@@ -61,74 +70,11 @@ int k=0;
 }
 
 
-void deplacer_piece(Plateau* p, int depart, int arrivee) { //déplace une pièce depuis la position depart, jusqu'à la position arrivee
-
-            Case piece = (*p).cases[depart] ;
-            p->cases[depart] = VIDE ;
-            p->cases[arrivee] = piece ;    
-}
-
-void pause();
-
-int dessiner(Plateau* p, SDL_Surface* ecran, SDL_Surface* pions[NbPions]){
+int dessiner(Plateau* p, SDL_Surface* ecran, SDL_Surface* pions[NbPions], SDL_Rect positionsPions[NbPions]){
 
 	int i=0;
 
 	int compteur=0;	//constante qui servira pour la recherche des coeff du plateau et le tracé des pions.
-
-// On dessine le plateau
- 
-	SDL_Surface *imageDeFond=NULL;
-	SDL_Surface *plateau=NULL;
-	SDL_Surface *lignes[NbLignes]={NULL};	
-	SDL_Surface *colonnes[NbLignes]={NULL};
-
-
-// On s'occupe des pions
-	SDL_Surface *noir=NULL; //première ligne de pions
-
-
-
-	SDL_Rect positionsLignes[NbLignes];
-	SDL_Rect positionsColonnes[NbLignes];
-	SDL_Rect positionImage;
-	SDL_Rect positionsPions[NbPions];
-
-	SDL_Rect positionPlateau;
-
-
-
-	positionImage.x=0; // Positions d'ancrage de l'image de fond
-	positionImage.y=0; 
-	positionPlateau.x=25; // Positions d'ancrage du plateau de jeu
-	positionPlateau.y=75;
-
- // Je crée un pointeur sur une SDL_Surface car c'est ce que SetVideoMode renvoie
-	
-    SDL_Init(SDL_INIT_VIDEO);// Initialisation de la SDL
-
-
-	for(i=0;i<8;i++){
-		lignes[i]= SDL_CreateRGBSurface(SDL_HWSURFACE,900,3,32,0,0,0,0);
-		colonnes[i]= SDL_CreateRGBSurface(SDL_HWSURFACE,3,900,32,0,0,0,0);
-		positionsLignes[i].x=0;
-		positionsLignes[i].y=(i+1)*100;
-		positionsColonnes[i].x=(i+1)*100;
-		positionsColonnes[i].y=0;
-		SDL_FillRect(lignes[i],NULL,SDL_MapRGB(lignes[i]->format,0,0,0));
-		SDL_FillRect(colonnes[i],NULL,SDL_MapRGB(lignes[i]->format,0,0,0));
-	}
-
-	imageDeFond= IMG_Load("ponton2.jpg");
-	plateau = IMG_Load("bois.jpg");
-
-
-	if(ecran==NULL){
-		printf("Erreur de chargement du mode vidéo %s\n", SDL_GetError());
-		exit(EXIT_FAILURE);
-	}
-
-	SDL_WM_SetCaption("Watashi no Hasami Shogi. Dozoo Yorochiku", NULL);
 
 
 	for(i=0;i<81;i++){
@@ -152,93 +98,169 @@ int dessiner(Plateau* p, SDL_Surface* ecran, SDL_Surface* pions[NbPions]){
 	}
 
 
-int continuer =1;
-int x;
-int y;
-int k;
-int adeplacer;
-int arrivee;
+}
+
+
+void pause(Plateau pla)
+{
+    int continuer = 1;
+    SDL_Event event;
+ 
+    while (continuer)
+    {
+        SDL_WaitEvent(&event);
+        switch(event.type)
+        {
+            case SDL_QUIT:
+                continuer =0;
+	
+				
+
+        }
+    }
+}
+
+
+
+
+
+
+int main(){
+
+int i=0;
+
+int compteur=0;
+
+int continuer=1;
+
 int depart;
-
-SDL_Event event1;
-
-while (continuer){
-
-    SDL_WaitEvent(&event1);
-
-    switch(event1.type){
-
-        case SDL_QUIT:
-
-            continuer = 0;
-
-            break;
-
-        case SDL_MOUSEBUTTONDOWN:
-			if (event1.button.button==SDL_BUTTON_LEFT){
-
-			x=((event1.button.x)-Xplateau)/100;
-			y=((event1.button.y)-Yplateau)/100;
-
-			for(k=0;k<NbPions;k++){
-				if(((positionsPions[k].x)-(5+Xplateau))/100 == x && ((positionsPions[k].y)-(5+Yplateau))/100==y){
-					adeplacer=k;  // indice du pions à déplacer dans mon tableau contenant les positions des images
+int arrivee;
 
 
-					depart= ((((event1.button.y/100)-1)*9)+(event1.button.x/100)); // indice de départ du nombre associé au pion dans le plateau
-					//printf("%d\n",depart);
+	SDL_Surface *ecran=NULL;
+    ecran= SDL_SetVideoMode(2000, 1300, 32, SDL_HWSURFACE|SDL_RESIZABLE); // chargement d'une fenêtre dans l'espace écran
+
+
+
+// On dessine le plateau
+ 
+	SDL_Surface *imageDeFond=NULL;
+	SDL_Surface *plateau=NULL;
+	SDL_Surface *lignes[NbLignes]={NULL};	
+	SDL_Surface *colonnes[NbLignes]={NULL};
+
+	SDL_Surface *pions[NbPions]={NULL};
+
+
+	SDL_Rect positionsLignes[NbLignes];
+	SDL_Rect positionsColonnes[NbLignes];
+	SDL_Rect positionImage;
+	SDL_Rect positionsPions[NbPions];
+
+	SDL_Rect positionPlateau;
+
+	positionImage.x=0; // Positions d'ancrage de l'image de fond
+	positionImage.y=0; 
+	positionPlateau.x=25; // Positions d'ancrage du plateau de jeu
+	positionPlateau.y=75;
+
+ // Je crée un pointeur sur une SDL_Surface car c'est ce que SetVideoMode renvoie
+
+
+	for(i=0;i<8;i++){
+		lignes[i]= SDL_CreateRGBSurface(SDL_HWSURFACE,900,3,32,0,0,0,0);
+		colonnes[i]= SDL_CreateRGBSurface(SDL_HWSURFACE,3,900,32,0,0,0,0);
+		positionsLignes[i].x=0;
+		positionsLignes[i].y=(i+1)*100;
+		positionsColonnes[i].x=(i+1)*100;
+		positionsColonnes[i].y=0;
+		SDL_FillRect(lignes[i],NULL,SDL_MapRGB(lignes[i]->format,0,0,0));
+		SDL_FillRect(colonnes[i],NULL,SDL_MapRGB(lignes[i]->format,0,0,0));
+	}
+
+
+
+	Plateau pla;
+	initialiser_plateau(&pla);
+	dessiner(&pla,ecran,pions, positionsPions);
+
+	
+    SDL_Init(SDL_INIT_VIDEO);// Initialisation de la SDL
+
+	imageDeFond= IMG_Load("ponton2.jpg");
+	plateau = IMG_Load("bois.jpg");
+
+
+	if(ecran==NULL){
+		printf("Erreur de chargement du mode vidéo %s\n", SDL_GetError());
+		exit(EXIT_FAILURE);
+	}
+
+	SDL_WM_SetCaption("Watashi no Hasami Shogi. Dozoo Yorochiku", NULL);
+
+
+		for(i=0; i<8;i++){
+
+			SDL_BlitSurface(lignes[i],NULL,plateau,&positionsLignes[i]);
+			SDL_BlitSurface(colonnes[i],NULL,plateau,&positionsColonnes[i]);
+	
+		}
+
+		SDL_BlitSurface(imageDeFond,NULL,ecran,&positionImage);
+
+		SDL_BlitSurface(plateau,NULL,ecran,&positionPlateau);	
+
+
+
+    SDL_Event event;
+ 
+    while (continuer)
+    {
+        SDL_WaitEvent(&event);
+        switch(event.type)
+        {
+            case SDL_QUIT:
+                continuer = 0;
+
+				break;
+
+			case SDL_MOUSEBUTTONUP:
+				if(event.button.button==SDL_BUTTON_LEFT){
+
+					depart= ((((event.button.y/100)-1)*9)+(event.button.x/100)); // indice de départ du nombre associé au pion dans le plateau
+				}else if(event.button.button==SDL_BUTTON_RIGHT){
+
+				arrivee= ((((event.button.y/100)-1)*9)+(event.button.x/100)); // indice d'arrivée
+
+				deplacer_piece(&pla,depart,arrivee);
+
+		SDL_BlitSurface(imageDeFond,NULL,ecran,&positionImage);
+
+		SDL_BlitSurface(plateau,NULL,ecran,&positionPlateau);	
+				dessiner(&pla, ecran, pions, positionsPions);
+
+				break;
+
 
 				}
 
+        }
 
-			}
-			break;
+				for(i=0;i<NbPions;i++){
+			 	SDL_BlitSurface(pions[i], NULL, ecran, &positionsPions[i]);
+				}
+			
 
-		  }else if (event1.button.button==SDL_BUTTON_RIGHT){
-			arrivee= ((((event1.button.y/100)-1)*9)+(event1.button.x/100)); // indice d'arrivée
+			    SDL_Flip(ecran);
 
-			//printf("%d\n",arrivee);
-			deplacer_piece(p,depart,arrivee); // on déplace dans la matrice avant de déplacer les images. Servira pour vérifier le coup légal.
-
-			positionsPions[adeplacer].x =((event1.button.x-positionPlateau.x)/100)*100+positionPlateau.x+5;
-            positionsPions[adeplacer].y =((event1.button.y-positionPlateau.y)/100)*100+positionPlateau.y+5;
-			afficher(p);
-
-
-			break;
-
-		}
-
-
-		}
-
-
-	for(i=0; i<8;i++){
-
-		SDL_BlitSurface(lignes[i],NULL,plateau,&positionsLignes[i]);
-		SDL_BlitSurface(colonnes[i],NULL,plateau,&positionsColonnes[i]);
-
-	}
-
-
-	SDL_BlitSurface(imageDeFond,NULL,ecran,&positionImage);
-
-	SDL_BlitSurface(plateau,NULL,ecran,&positionPlateau);	
 
 	
-	for(i=0;i<NbPions;i++){
- 	SDL_BlitSurface(pions[i], NULL, ecran, &positionsPions[i]);
-	}
+    }
 
-    SDL_Flip(ecran);
-
-}
 
     
 
 	SDL_FreeSurface(imageDeFond);
-
-	SDL_FreeSurface(noir);
 
 	SDL_FreeSurface(ecran);
 
@@ -255,23 +277,25 @@ while (continuer){
     SDL_Quit(); // Arrêt de la SDL
  
     return EXIT_SUCCESS; // Fermeture du programme
+
+
 }
 
 
 
-void main(){
 
-	SDL_Surface *ecran=NULL;
-    ecran= SDL_SetVideoMode(2000, 1300, 32, SDL_HWSURFACE|SDL_RESIZABLE); // chargement d'une fenêtre dans l'espace écran
-	SDL_Surface *pions[NbPions]={NULL};
-	SDL_Rect positionsPions[NbPions];
 
-	Plateau pla;
-	initialiser_plateau(&pla);
 
-	dessiner(&pla, ecran, pions);
 
-}
+
+
+
+
+
+
+
+
+
 
 
 
