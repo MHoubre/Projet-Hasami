@@ -101,29 +101,6 @@ int dessiner(Plateau* p, SDL_Surface* ecran, SDL_Surface* pions[NbPions], SDL_Re
 }
 
 
-void pause(Plateau pla)
-{
-    int continuer = 1;
-    SDL_Event event;
- 
-    while (continuer)
-    {
-        SDL_WaitEvent(&event);
-        switch(event.type)
-        {
-            case SDL_QUIT:
-                continuer =0;
-	
-				
-
-        }
-    }
-}
-
-
-
-
-
 
 int main(){
 
@@ -206,17 +183,22 @@ int arrivee;
 	
 		}
 
-		SDL_BlitSurface(imageDeFond,NULL,ecran,&positionImage);
+		SDL_BlitSurface(imageDeFond,NULL,ecran,&positionImage); // on Blit toutes les images nécessaires à l'affichage du plateau de jeu
 
 		SDL_BlitSurface(plateau,NULL,ecran,&positionPlateau);	
 
 
 
+
+
+//Etape de jeu car régissant le déplacement des pions et la fermeture de la fenêtre
+
     SDL_Event event;
  
     while (continuer)
     {
-        SDL_WaitEvent(&event);
+        SDL_WaitEvent(&event); // on attend qu'un évènement se passe
+
         switch(event.type)
         {
             case SDL_QUIT:
@@ -225,19 +207,22 @@ int arrivee;
 				break;
 
 			case SDL_MOUSEBUTTONUP:
-				if(event.button.button==SDL_BUTTON_LEFT){
+				if(event.button.button==SDL_BUTTON_LEFT){ // si on fait un clic gauche, on prend les coordonnées du curseur pour savoir quel pion déplacer
 
 					depart= ((((event.button.y/100)-1)*9)+(event.button.x/100)); // indice de départ du nombre associé au pion dans le plateau
-				}else if(event.button.button==SDL_BUTTON_RIGHT){
+
+
+				}else if(event.button.button==SDL_BUTTON_RIGHT){ // si on fait un clic droit, on prend les coordonnées du curseur pour savoir où déplacer le pion
 
 				arrivee= ((((event.button.y/100)-1)*9)+(event.button.x/100)); // indice d'arrivée
 
-				deplacer_piece(&pla,depart,arrivee);
+				deplacer_piece(&pla,depart,arrivee); // on déplace la pièce dans la matrice
 
-		SDL_BlitSurface(imageDeFond,NULL,ecran,&positionImage);
+				SDL_BlitSurface(imageDeFond,NULL,ecran,&positionImage); // on Reblit tout pour cacher les précédentes places des pions
 
-		SDL_BlitSurface(plateau,NULL,ecran,&positionPlateau);	
-				dessiner(&pla, ecran, pions, positionsPions);
+				SDL_BlitSurface(plateau,NULL,ecran,&positionPlateau);	
+
+				dessiner(&pla, ecran, pions, positionsPions); // on rdéfini  les coordonnées des pions en fonction de leur place dans la matrice de contrôle.
 
 				break;
 
@@ -247,18 +232,19 @@ int arrivee;
         }
 
 				for(i=0;i<NbPions;i++){
-			 	SDL_BlitSurface(pions[i], NULL, ecran, &positionsPions[i]);
+			 	SDL_BlitSurface(pions[i], NULL, ecran, &positionsPions[i]); // on Blit "dessine" les pions en fonction des coordonnées données avec la fonction dessiner
 				}
 			
 
-			    SDL_Flip(ecran);
+			    SDL_Flip(ecran); // on met à jour l'écran
 
 
 	
     }
 
 
-    
+
+// Si on décide de quitter le jeu (que l'on sort de la boucle while(continuer)), on libère les différents espaces mémoire alloués.    
 
 	SDL_FreeSurface(imageDeFond);
 
