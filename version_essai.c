@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
+#include <SDL/SDL_mixer.h>
 #define Xplateau 25
 #define Yplateau 75
 #define TailleCase 100
@@ -305,6 +306,19 @@ initialiser_plateau(&pla);
 	
     SDL_Init(SDL_INIT_VIDEO);// Initialisation de la SDL
 
+
+	if(Mix_OpenAudio(44100,MIX_DEFAULT_FORMAT,MIX_DEFAULT_CHANNELS,1024)==-1){
+
+		printf("%s", Mix_GetError());
+
+	}
+
+	Mix_Music* zicmu;
+
+	zicmu= Mix_LoadMUS("musique_c.mp3");
+
+	Mix_PlayMusic(zicmu,-1);
+
 	imageDeFond= IMG_Load("ponton2.jpg");
 	plateau = IMG_Load("bois.jpg");
 
@@ -346,6 +360,23 @@ initialiser_plateau(&pla);
                 continuer = 0;
 
 				break;
+
+
+
+			case SDL_KEYDOWN:
+				if(event.key.keysym.sym == SDLK_p){
+	
+					if(Mix_PausedMusic()==1){
+
+						Mix_ResumeMusic();
+
+					}else{
+						
+						Mix_PauseMusic();		
+
+					}
+
+				}
 
 			case SDL_MOUSEBUTTONUP:
 				if(event.button.button==SDL_BUTTON_LEFT){ // si on fait un clic gauche, on prend les coordonnées du curseur pour savoir quel pion déplacer
@@ -413,7 +444,8 @@ initialiser_plateau(&pla);
 	}
 
 
- 
+	Mix_FreeMusic(zicmu);
+	Mix_CloseAudio();
     SDL_Quit(); // Arrêt de la SDL
  
     return EXIT_SUCCESS; // Fermeture du programme
