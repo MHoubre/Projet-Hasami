@@ -104,7 +104,7 @@ int dessiner(Plateau* p, SDL_Surface* ecran, SDL_Surface* pions[NbPions], SDL_Re
 
 
 
-int main(){
+int jeu(){
 
 int i=0;
 
@@ -183,7 +183,7 @@ initialiser_plateau(&pla);
 	Mix_PlayMusic(zicmu,-1);
 
 	imageDeFond= IMG_Load("ponton2.jpg");
-	plateau = IMG_Load("bois.jpg");
+	plateau = IMG_Load("plateau.jpg");
 
 
 	if(ecran==NULL){
