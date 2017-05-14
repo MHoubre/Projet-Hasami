@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "plateau.h"
+#include "fonction_evaluation.c"
 
 void initialiser_plateau(Plateau* p) {
 
