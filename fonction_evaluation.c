@@ -18,13 +18,13 @@ typedef struct Plateau {
 
 //Prototype
 
-double evaluater ( plateau * p, double coef, Joueur j);
+double evaluer ( plateau * p, double coef, Joueur j);
 int nombreDePions(plateau* p, Joueur j);
-int evaluaterMateriel(plateau *p);
-int evaluaterMobilite( plateau* p);
-int evaluaterLigne(plateau* p,Joueur j);
-int evaluateCapture(plateau* p, Joueur j);
-int evaluateCentre(Joueur j, plateau *p);
+int evaluerMateriel(plateau *p);
+int evaluerMobilite( plateau* p);
+int evaluerLigne(plateau* p,Joueur j);
+int evalueCapture(plateau* p, Joueur j);
+int evalueCentre(Joueur j, plateau *p);
 
 
 int main()
@@ -38,7 +38,7 @@ int main()
 }
 
 // fonction d'evaluation finale
-double evaluater ( plateau* p, double coef, Joueur j){
+double evaluer ( plateau* p, double coef, Joueur j){
 
     double eval = 0;
     double coef1 = 5;
@@ -48,22 +48,22 @@ double evaluater ( plateau* p, double coef, Joueur j){
     double coef5 = 2;
 
     if (coef == coef1){
-        eval += coef1* evaluaterMateriel(p);
+        eval += coef1* evaluerMateriel(p);
     }
 
     if (coef == coef2){
-        eval += coef2* evaluaterMobilite( p);
+        eval += coef2* evaluerMobilite( p);
     }
 
     if (coef == coef3){
-        eval += coef3* evaluaterLigne(p,j);
+        eval += coef3* evaluerLigne(p,j);
     }
 
     if (coef == coef4){
-        eval += coef4* evaluateCapture(p,j);
+        eval += coef4* evalueCapture(p,j);
     }
         if (coef == coef5){
-        eval += coef5* evaluateCentre( j, p);
+        eval += coef5* evalueCentre( j, p);
     }
 
     return eval;
@@ -105,7 +105,7 @@ int nombreDePions(plateau* p, Joueur j)
 
 //Evaluation dU Materiel consiste à faire la différence entre le nombre de pions que possède chaque joueur
 
-int evaluaterMateriel(plateau *p)
+int evaluerMateriel(plateau *p)
 {
     int B, N;
 
@@ -122,7 +122,7 @@ Parcourir les pions du joueur pion par pion et Calculer le nombre de déplacement
 Affecter la diffrérence entre les deplacements des pions des deux joueurs à evaluateMobility */
 
 
-int evaluaterMobilite( plateau* p)
+int evaluerMobilite( plateau* p)
 {
         // JOUEUR_BLANC
         int DeplacementJoueurBlanc = 0;
@@ -384,7 +384,7 @@ int evaluaterLigne(plateau *p,Joueur j){
 si on a deux pions de mm couleur sur une mm ligne ou colonne
 evaluer capture sera le nombre de capture possible que possède le joueur sur le plateau * 3 */
 
-int evaluateCapture(plateau* p, Joueur j)
+int evalueCapture(plateau* p, Joueur j)
 {
 
    int i=0;
@@ -526,7 +526,7 @@ int evaluateCapture(plateau* p, Joueur j)
 /* Valoriser les cases du centre
 On retourne la différence qu'on amplifie à puissance de 3 pour ne pas perdre le signe du résultat */
 
-int evaluateCentre(Joueur j, plateau *p)
+int evaluseCentre(Joueur j, plateau *p)
 {
     int B, N;
     int i;

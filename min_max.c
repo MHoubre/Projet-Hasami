@@ -41,7 +41,7 @@ Plateau* min_max(Plateau *p, int profondeur, Joueur joueur) {
         p_copy = deplacer_piece(p_copy, joueur, coup.depart, coup.arrivee) ;
 
         //on récupère la valeur associée au coup
-        val_coup = mini(p_copy, f, (joueur+1)%2, profondeur) ;
+        val_coup = mini(p_copy, f, joueur, profondeur) ;
 
         //si les valeurs sont égales, on choisit aléatoirement le coup à jouer
         if (val_coup > val_coup_max || ((val_coup == val_coup_max) && (rand()%2 == 0))) {
@@ -91,7 +91,7 @@ int mini(Plateau* p, Arbre* a, Joueur joueur, int profondeur) {
             p_copy = deplacer_piece(p_copy, joueur, coup.depart, coup.arrivee) ;
 
             //on récupère la valeur associée au coup
-            val_coup = maxi(p_copy, f, (joueur+1)%2, profondeur-1) ;
+            val_coup = maxi(p_copy, f, joueur, profondeur-1) ;
 
             if (val_coup < val_coup_min) {
                 val_coup_min = val_coup ;
@@ -131,7 +131,7 @@ int maxi(Plateau* p, Arbre* a, Joueur joueur, int profondeur) {
             p_copy = deplacer_piece(p_copy, joueur, coup.depart, coup.arrivee) ;
 
             //on récupère la valeur associée au coup
-            val_coup = mini(p_copy, f, (joueur+1)%2, profondeur-1) ;
+            val_coup = mini(p_copy, f, joueur, profondeur-1) ;
 
             if (val_coup > val_coup_max) {
                 val_coup_max = val_coup ;
