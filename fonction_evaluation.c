@@ -9,6 +9,8 @@
 //Fonction d'evaluation finale
 int evaluer (Plateau* p, Joueur j){
 
+    int eval = 0 ;
+
     int coef1 = 1 ;
     int coef2 = 2 ;
     int coef3 = 1 ;
