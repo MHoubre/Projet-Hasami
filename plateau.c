@@ -142,9 +142,6 @@ int coup_legal(Plateau* p, Joueur j, int depart, int arrivee) {
 
 Plateau* manger(Plateau* p, Joueur joueur, int depart, int arrivee) {
 
-    int ligne = arrivee/9 ;
-    int colonne = arrivee%9 ;
-
     //le déplacement est-il en lignes ?
     if (depart%9 == arrivee%9) {
         //le déplacement est-il de haut en bas ?
@@ -301,7 +298,7 @@ Plateau* manger(Plateau* p, Joueur joueur, int depart, int arrivee) {
 
 }
 
-/*
+
 //on renvoie -1 s'il n'y a pas de gagnant, sinon l'entier correspondant
 //au joueur qui gagne la partie
 int gagnant(Plateau* p) {
@@ -328,5 +325,3 @@ int gagnant(Plateau* p) {
     return -1 ;
 
 }
-
-*/
