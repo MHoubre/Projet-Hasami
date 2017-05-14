@@ -98,6 +98,7 @@ int mini(Plateau* p, Arbre* a, Joueur joueur, int profondeur) {
         }
 
         return val_coup_min ;
+    }
 }
 
 
@@ -138,6 +139,7 @@ int maxi(Plateau* p, Arbre* a, Joueur joueur, int profondeur) {
         }
 
         return val_coup_max ;
+    }
 }
 
 
