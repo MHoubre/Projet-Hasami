@@ -301,7 +301,7 @@ Plateau* manger(Plateau* p, Joueur joueur, int depart, int arrivee) {
 
 }
 
-
+/*
 //on renvoie -1 s'il n'y a pas de gagnant, sinon l'entier correspondant
 //au joueur qui gagne la partie
 int gagnant(Plateau* p) {
@@ -328,3 +328,5 @@ int gagnant(Plateau* p) {
     return -1 ;
 
 }
+
+*/
