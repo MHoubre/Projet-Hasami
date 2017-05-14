@@ -142,158 +142,189 @@ int coup_legal(Plateau* p, Joueur j, int depart, int arrivee) {
 
 Plateau* manger(Plateau* p, Joueur joueur, int depart, int arrivee) {
 
-    //le déplacement est-il en ligne ?
+    int ligne = arrivee/9 ;
+    int colonne = arrivee%9 ;
+
+    //le déplacement est-il en lignes ?
     if (depart%9 == arrivee%9) {
-    //le déplacement est-il de gauche à droite ?
+        //le déplacement est-il de haut en bas ?
         if (arrivee > depart) {
-            //une pièce sur la même ligne peut être mangée si et seulement si
-            //la case à gauche de l'arrivee est occupée par une pièce du joueur
-            //adverse et qu'il y a une pièce du joueur courant à gauche de la case depart.
-            if ((*p).cases[arrivee-1] == ((joueur+1)%2)+1) {
-                int i = (depart/9)*9+8;
-                while (i>depart && (*p).cases[i]!=joueur+1) {
-                    i-- ;
+            //on teste s'il y a une pièce du joueur adverse en bas
+            if (arrivee+18<81 && (*p).cases[arrivee+9]==((joueur+1)%2)+1) {
+                int i = arrivee+18 ;
+                //tant qu'on a des pièces du joueur adverse alignées, on continue
+                while (i<81 && (*p).cases[i]==((joueur+1)%2)+1) {
+                    i+=9 ;
                 }
-                //si c'est le cas, la pièce est mangée
-                if (i>depart) {
-                    (*p).cases[arrive+1] = VIDE ;
+                //si lorsqu'on s'arrête on est sur une case contenant un pion
+                //du joueur courant, alors on mange la ligne de pion adverse
+                if (i<81 && (*p).cases[i]==joueur+1){
+                    int k ;
+                    for (k = arrivee+9 ; k<i ; k+=9) {
+                        (*p).cases[k]=VIDE ;
+                    }
                 }
             }
         }
-
+        //sinon, le déplacement est de bas en haut
         else {
-            //une pièce sur la même ligne peut être mangée si et seulement si
-            //la case à droite de l'arrivee est occupée par une pièce du joueur
-            //adverse et qu'il y a une pièce du joueur courant à droite de la case depart.
-            if ((*p).cases[arrivee+1] == ((joueur+1)%2)+1) {
-                int i = (depart/9)*9 ;
-                while (i<depart && (*p).cases[i]!=joueur+1) {
-                    i++ ;
+            //on teste s'il y a une pièce du joueur adverse en haut
+            if (arrivee-18>0 && (*p).cases[arrivee-9]==((joueur+1)%2)+1) {
+                int i = arrivee-18 ;
+                //tant qu'on a des pièces du joueur adverse alignées, on continue
+                while (i>0 && (*p).cases[i]==((joueur+1)%2)+1) {
+                    i-=9 ;
                 }
-                //si c'est le cas, la pièce est mangée
-                if (i<depart) {
-                    (*p).cases[arrive-1] = VIDE ;
+                //si lorsqu'on s'arrête on est sur une case contenant un pion
+                //du joueur courant, alors on mange la ligne de pion adverse
+                if (i>0 && (*p).cases[i]==joueur+1){
+                    int k ;
+                    for (k = arrivee-9 ; k>i ; k-=9) {
+                        (*p).cases[k]=VIDE ;
+                    }
                 }
             }
         }
 
-        //puis, il faut vérifier si une pièce est mangée sur la colonne
-        int j = arrivee%9 ;
-
-        //tout d'abord, en bas de la case arrivee !
-        //il faut trouver une case contenant une autre pièce du joueur courant
-        while (j<arrivee && (*p).cases[j]!=joueur+1) {
-            j+=9 ;
-        }
-        //en a-t-on trouvé ?
-        if (j < arrivee) {
-            while (j < arrivee) {
-                //si on tombe sur une pièce du joueur adverse, on vide la case
-                if ((*p).cases[j] == ((joueur+1)%2)+1) {
-                    (*p).cases[j] = VIDE ;
+        //il y a-t-il une pièce adverse à droite ?
+        if (arrivee%9<7 && (*p).cases[arrivee+1]==((joueur+1)%2)+1) {
+            int j = arrivee+1 ;
+            //tant qu'il y a des pièces du joueur adverse alignées, on continue
+            while (j%9!=8 && (*p).cases[j]==((joueur+1)%2)+1) {
+                j++ ;
+            }
+            //si lorsqu'on s'arrête on est sur une case contenant un pion
+            //du joueur courant, alors on mange la ligne de pion adverse
+            if (j%9!=8 && (*p).cases[j]==joueur+1){
+                int k ;
+                for (k = arrivee+1 ; k<j ; k++) {
+                    (*p).cases[k]=VIDE ;
                 }
-                j+=9 ;
             }
         }
 
-        //maintenant, au-dessus ! on a ici j == arrivee ;
-        //on se place sur la ligne la plus "haute" du plateau
-        j = (arrive%9)+72 ;
-
-        //on cherche une case contenant une autre pièce du joueur courant
-        while (j>arrivee && (*p).cases[j]!=joueur+1) {
-            j-=9 ;
-        }
-        //en a-t-on trouvé ?
-        if (j > arrivee) {
-            while (j > arrivee) {
-                //si on tombe sur une pièce du joueur adverse, on vide la case
-                if ((*p).cases[j] == ((joueur+1)%2)+1) {
-                    (*p).cases[j] = VIDE ;
+        //il y a-t-il une pièce adverse à droite ?
+        if (arrivee%9>1 && (*p).cases[arrivee-1]==((joueur+1)%2)+1) {
+            int j = arrivee-1 ;
+            //tant qu'il y a des pièces du joueur adverse alignées, on continue
+            while (j%9!=0 && (*p).cases[j]==((joueur+1)%2)+1) {
+                j-- ;
+            }
+            //si lorsqu'on s'arrête on est sur une case contenant un pion
+            //du joueur courant, alors on mange la ligne de pion adverse
+            if (j%9!=0 && (*p).cases[j]==joueur+1){
+                int k ;
+                for (k = arrivee-1 ; k>j ; k--) {
+                    (*p).cases[k]=VIDE ;
                 }
-                j-=9 ;
             }
         }
-
     }
 
-
-    //sinon, il est en colonne, et suivant la même logique on obtient :
+    //sinon le déplacement est en colonnes
     else {
-        //le déplacement est-il de bas en haut ?
+        //le déplacement est-il de gauche à droite ?
         if (arrivee > depart) {
-            //une pièce sur la même colonne peut être mangée si et seulement si
-            //la case en bas de l'arrivee est occupée par une pièce du joueur
-            //adverse et qu'il y a une pièce du joueur courant en bas de la case depart.
-            if ((*p).cases[arrivee-9] == ((joueur+1)%2)+1) {
-                int j = depart%9 ;
-                while (j<depart && (*p).cases[j]!=joueur+1) {
-                    j+=9 ;
+            //on teste s'il y a une pièce du joueur adverse à droite
+            if (arrivee%9<7 && (*p).cases[arrivee+1]==((joueur+1)%2)+1) {
+                int j = arrivee+1 ;
+                //tant qu'on a des pièces du joueur adverse alignées, on continue
+                while (j%9!=8 && (*p).cases[j]==((joueur+1)%2)+1) {
+                    j++ ;
                 }
-                //si c'est le cas, la pièce est mangée
-                if (j<depart) {
-                    (*p).cases[arrive-9] = VIDE ;
+                //si lorsqu'on s'arrête on est sur une case contenant un pion
+                //du joueur courant, alors on mange la ligne de pion adverse
+                if (j%9!=8 && (*p).cases[j]==joueur+1){
+                    int k ;
+                    for (k = arrivee+1 ; k<j ; k++) {
+                        (*p).cases[k]=VIDE ;
+                    }
                 }
             }
         }
-
-        //sinon, le déplacement est de haut en bas
+        //sinon, le déplacement est de droite à gauche
         else {
-            //une pièce sur la même colonne peut être mangée si et seulement si
-            //la case en haut de l'arrivee est occupée par une pièce du joueur
-            //adverse et qu'il y a une pièce du joueur courant en haut de la case depart.
-            if ((*p).cases[arrivee+9] == ((joueur+1)%2)+1) {
-                int j = (depart%9)+72 ;
-                while (j>depart && (*p).cases[j]!=joueur+1) {
-                    j-=9 ;
+            //on teste s'il y a une pièce du joueur adverse à gauche
+            if (arrivee%9>1 && (*p).cases[arrivee-1]==((joueur+1)%2)+1) {
+                int j = arrivee-1 ;
+                //tant qu'on a des pièces du joueur adverse alignées, on continue
+                while (j%9!=0 && (*p).cases[j]==((joueur+1)%2)+1) {
+                    j-- ;
                 }
-                //si c'est le cas, la pièce est mangée
-                if (j>depart) {
-                    (*p).cases[arrive+9] = VIDE ;
+                //si lorsqu'on s'arrête on est sur une case contenant un pion
+                //du joueur courant, alors on mange la ligne de pion adverse
+                if (j%9!=0 && (*p).cases[j]==joueur+1){
+                    int k ;
+                    for (k = arrivee-1 ; k>j ; k--) {
+                        (*p).cases[k]=VIDE ;
+                    }
                 }
             }
         }
 
-        //puis, il faut vérifier si une pièce est mangée sur la ligne
-        int i = (arrivee/9)*9 ;
-
-        //tout d'abord, à gauche de la case arrivee !
-        //il faut trouver une case contenant une autre pièce du joueur courant
-        while (i<arrivee && (*p).cases[i]!=joueur+1) {
-            i++ ;
-        }
-        //en a-t-on trouvé ?
-        if (i < arrivee) {
-            while (i < arrivee) {
-                //si on tombe sur une pièce du joueur adverse, on vide la case
-                if ((*p).cases[i] == ((joueur+1)%2)+1) {
-                    (*p).cases[i] = VIDE ;
+        //il y a-t-il une pièce adverse en bas ?
+        if (arrivee+18<81 && (*p).cases[arrivee+9]==((joueur+1)%2)+1) {
+            int i = arrivee+9 ;
+            //tant qu'il y a des pièces du joueur adverse alignées, on continue
+            while (i<81 && (*p).cases[i]==((joueur+1)%2)+1) {
+                i+=9 ;
+            }
+            //si lorsqu'on s'arrête on est sur une case contenant un pion
+            //du joueur courant, alors on mange la ligne de pion adverse
+            if (i<81 && (*p).cases[i]==joueur+1){
+                int k ;
+                for (k = arrivee+9 ; k<i ; k+=9) {
+                    (*p).cases[k]=VIDE ;
                 }
-                i++ ;
             }
         }
 
-        //maintenant, au-dessus ! on a ici j == arrivee ;
-        //on se place sur la ligne la plus à droite du plateau
-        i = (arrivee/9)*9+8 ;
-
-        //on cherche une case contenant une autre pièce du joueur courant
-        while (i>arrivee && (*p).cases[i]!=joueur+1) {
-            i-- ;
-        }
-        //en a-t-on trouvé ?
-        if (i > arrivee) {
-            while (i > arrivee) {
-                //si on tombe sur une pièce du joueur adverse, on vide la case
-                if ((*p).cases[i] == ((joueur+1)%2)+1) {
-                    (*p).cases[i] = VIDE ;
+        //il y a-t-il une pièce adverse en haut ?
+        if (arrivee-18>0 && (*p).cases[arrivee-1]==((joueur+1)%2)+1) {
+            int i = arrivee-9 ;
+            //tant qu'il y a des pièces du joueur adverse alignées, on continue
+            while (i>0 && (*p).cases[i]==((joueur+1)%2)+1) {
+                i-=9 ;
+            }
+            //si lorsqu'on s'arrête on est sur une case contenant un pion
+            //du joueur courant, alors on mange la ligne de pion adverse
+            if (i>0 && (*p).cases[i]==joueur+1){
+                int k ;
+                for (k = arrivee-9 ; k>i ; k-=9) {
+                    (*p).cases[k]=VIDE ;
                 }
-                i-- ;
             }
         }
-
     }
 
     return p ;
+
+}
+
+
+//on renvoie -1 s'il n'y a pas de gagnant, sinon l'entier correspondant
+//au joueur qui gagne la partie
+int gagnant(Plateau* p) {
+
+    //si le joueur blanc a 1 ou 0 pion, il a perdu
+    int nb_blanc = nombreDePions(p, JOUEUR_BLANC) ;
+    if (nb_blanc<2) {
+        return JOUEUR_NOIR ;
+    }
+
+    else {
+        //si le joueur noir a 1 ou 0 pion, il a perdu
+        int nb_noir = nombreDePions(p, JOUEUR_NOIR) ;
+        if (nb_noir<2) {
+            return JOUEUR_BLANC ;
+        }
+
+        //sinon, on cherche une ligne ou diagonale gagnante
+        else {
+
+        }
+    }
+
+    return -1 ;
 
 }

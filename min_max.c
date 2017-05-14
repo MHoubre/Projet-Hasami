@@ -9,7 +9,7 @@
 
 int INFINI = 100 ;
 
-void min_max(Plateau *p, int profondeur, Joueur joueur) {
+Plateau* min_max(Plateau *p, int profondeur, Joueur joueur) {
 
     //on aura recours à la méthode rand()
     srand(time(NULL)) ;
@@ -53,7 +53,7 @@ void min_max(Plateau *p, int profondeur, Joueur joueur) {
     }
 
     //on joue le meilleur coup !
-    deplacer_piece(p, joueur, meilleur_coup.depart, meilleur_coup.arrivee) ;
+    return deplacer_piece(p, joueur, meilleur_coup.depart, meilleur_coup.arrivee) ;
     /*
     afficher(a) ;
     int t = taille(a) ;
@@ -212,15 +212,5 @@ int pieces_joueur(int pieces[], Plateau *p, Joueur joueur) {
         //On regarde la case suivante
         ind++ ;
     }
-
-}
-
-
-
-//on renvoie -1 s'il n'y a pas de gagnant, sinon l'entier correspondant
-//au joueur qui gagne la partie
-int gagnant(Plateau* p) {
-
-    return -1 ;
 
 }
