@@ -190,7 +190,7 @@ Arbre* initialiser_arbre_coups(Arbre* a, Plateau* p, int pieces[], Joueur joueur
 
 
 
-int pieces_joueur(int pieces[], Plateau *p, Joueur joueur) {
+void pieces_joueur(int pieces[], Plateau *p, Joueur joueur) {
 
     //Initialisation
     int i ;
