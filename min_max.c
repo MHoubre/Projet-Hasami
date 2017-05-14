@@ -6,6 +6,7 @@
 #include "arbres.c"
 #include "plateau.h"
 #include "plateau.c"
+#include "fonction_evaluation.c"
 
 int INFINI = 100 ;
 
@@ -66,7 +67,7 @@ Plateau* min_max(Plateau *p, int profondeur, Joueur joueur) {
 int mini(Plateau* p, Arbre* a, Joueur joueur, int profondeur) {
 
     if (profondeur==0 || gagnant(p)!=-1) {
-        //renvoyer l'évaluation du jeu
+        return evaluer(p, j) ;
     }
 
     else {
@@ -106,7 +107,7 @@ int mini(Plateau* p, Arbre* a, Joueur joueur, int profondeur) {
 int maxi(Plateau* p, Arbre* a, Joueur joueur, int profondeur) {
 
     if (profondeur==0 || gagnant(p)!=-1) {
-        //renvoyer l'évaluation du jeu
+        return evaluer(p, j) ;
     }
 
     else {
