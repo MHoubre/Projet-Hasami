@@ -11,11 +11,34 @@
 int evaluer (Plateau* p, Joueur j){
 
     int eval = 0 ;
+    int nbB = nombreDePions(p, JOUEUR_BLANC);
+    int nbN = nombreDePions(p, JOUEUR_NOIR);
 
-    int coef1 = 1 ;
-    int coef2 = 2 ;
-    int coef3 = 1 ;
-    int coef4 = 1 ;
+    int coef1;
+    int coef2;
+    int coef3;
+    int coef4;
+
+    if (nbB > 12 && nbN > 12 ){
+        coef1 = 150;
+        coef2 = 3;
+        coef3 = 60;
+        coef4 = 300;
+    } else if (nbB > 5 && nbN > 5 ){
+        coef1 = 225;
+        coef2 = 1;
+        coef3 = 90;
+        coef4 = 150;
+    } else {
+        coef1 = 300;
+        coef2 = 1;
+        if (nbB < 5 && nbN < 5){
+           coef3 = 0;
+        }else {
+            coef3 = 90;
+        }
+        coef4 = 225;
+    }
 
     eval += coef1* evaluerMateriel(p, j);
     eval += coef2* evaluerMobilite(p, j);
