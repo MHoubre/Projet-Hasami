@@ -61,8 +61,18 @@ Plateau* min_max(Plateau *p, int profondeur, Joueur joueur) {
 
 int mini(Plateau* p, Arbre* a, Joueur joueur, Joueur joueur_courant, int profondeur) {
 
-    if (profondeur==0 || gagnant(p)!=-1) {
-        return evaluer(p, joueur) ;
+    int joueur_gagnant = gagnant(p) ;
+
+    if (profondeur==0 || joueur_gagnant!=-1) {
+        if (joueur_gagnant==joueur) {
+            return 10000 ;
+        }
+        else if (joueur_gagnant==(joueur+1)%2) {
+            return -10000 ;
+        }
+        else {
+            return evaluer(p, joueur) ;
+        }
     }
 
     else {
@@ -102,8 +112,18 @@ int mini(Plateau* p, Arbre* a, Joueur joueur, Joueur joueur_courant, int profond
 
 int maxi(Plateau* p, Arbre* a, Joueur joueur, Joueur joueur_courant, int profondeur) {
 
-    if (profondeur==0 || gagnant(p)!=-1) {
-        return evaluer(p, joueur) ;
+    int joueur_gagnant = gagnant(p) ;
+
+    if (profondeur==0 || joueur_gagnant!=-1) {
+        if (joueur_gagnant==joueur) {
+            return 10000 ;
+        }
+        else if (joueur_gagnant==(joueur+1)%2) {
+            return -10000 ;
+        }
+        else {
+            return evaluer(p, joueur) ;
+        }
     }
 
     else {
