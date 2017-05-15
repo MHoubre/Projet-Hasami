@@ -1,10 +1,12 @@
+#ifndef MIN_MAX_C_INCLUDED
+#define MIN_MAX_C_INCLUDED
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include "min_max.h"
 #include "arbres.h"
-#include "arbres.c"
-#include "fonction_evaluation.c"
+#include "fonction_evaluation.h"
+#include "plateau.h"
 
 int INFINI = 100 ;
 
@@ -47,17 +49,12 @@ Plateau* min_max(Plateau *p, int profondeur, Joueur joueur) {
             val_coup_max = val_coup ;
             meilleur_coup = coup ;
         }
-
-
     }
 
+    afficher(a) ;
+    printf("Taille : %d\nHauteur : %d", taille(a), hauteur(a)) ;
     //on joue le meilleur coup !
     return deplacer_piece(p, joueur, meilleur_coup.depart, meilleur_coup.arrivee) ;
-    /*
-    afficher(a) ;
-    int t = taille(a) ;
-    printf("%d\n",t) ;
-    */
 }
 
 
@@ -215,3 +212,5 @@ void pieces_joueur(int pieces[], Plateau *p, Joueur joueur) {
     }
 
 }
+
+#endif // MIN_MAX_C_INCLUDED

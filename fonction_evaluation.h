@@ -1,5 +1,6 @@
 #ifndef FONCTION_EVALUATION_H_INCLUDED
 #define FONCTION_EVALUATION_H_INCLUDED
+#include "plateau.h"
 
 int evaluer(Plateau * p, Joueur j);
 int nombreDePions(Plateau* p, Joueur j);

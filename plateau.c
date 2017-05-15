@@ -1,6 +1,9 @@
+#ifndef PLATEAU_C_INCLUDED
+#define PLATEAU_C_INCLUDED
 #include <stdio.h>
 #include <stdlib.h>
 #include "plateau.h"
+#include "fonction_evaluation.h"
 
 void initialiser_plateau(Plateau* p) {
 
@@ -318,10 +321,55 @@ int gagnant(Plateau* p) {
 
         //sinon, on cherche une ligne ou diagonale gagnante
         else {
+            int k = 0 ;
+            int ddb, dgb, vb, ddn, dgn, vn ;
 
+            int gagnant_blanc = 0 ;
+            int gagnant_noir = 0 ;
+
+            while(k<81 && gagnant_blanc==gagnant_noir) {
+                ddb = diagonale_droite_blanc(p, k) ;
+                dgb = diagonale_gauche_blanc(p, k) ;
+                vb = verticale_blanc(p, k) ;
+                ddn = diagonale_droite_noir(p, k) ;
+                dgn = diagonale_gauche_noir(p, k) ;
+                vn = verticale_noir(p, k) ;
+
+                if (ddb>4 || dgb>4 || vb>4) {
+                    gagnant_blanc = 1 ;
+                }
+                else {
+                    if (ddn>4 || dgn>4 || vn>4) {
+                        gagnant_noir = 1 ;
+                    }
+                }
+
+                k++ ;
+            }
+
+            if (gagnant_blanc==1) {
+                return JOUEUR_BLANC ;
+            }
+            else {
+                if (gagnant_noir==1) {
+                    return JOUEUR_NOIR ;
+                }
+                else {
+                    return -1 ;
+                }
+            }
         }
     }
-
-    return -1 ;
-
 }
+
+
+//on copie un plateau dans un autre
+Plateau* copy_to(Plateau* p, Plateau* p_copy) {
+    int k ;
+    for (k=0 ; k<81 ; k++) {
+        p_copy->cases[k] = (*p).cases[k] ;
+    }
+    return p_copy ;
+}
+
+#endif // FONCTION_EVALUATION_C_INCLUDED

@@ -14,9 +14,11 @@ typedef struct Plateau {
 }Plateau ;
 
 
-Plateau* manger(Plateau* p, Joueur j, int depart, int arrivee) ;
 void initialiser_plateau(Plateau* p) ;
 Plateau* deplacer_piece(Plateau* p, Joueur j, int depart, int arrivee) ;
 int coup_legal(Plateau* p, Joueur j, int depart, int arrivee) ;
+Plateau* manger(Plateau* p, Joueur j, int depart, int arrivee) ;
+int gagnant(Plateau* p) ;
+Plateau* copy_to(Plateau* p, Plateau* p_copy) ;
 
 #endif // PLATEAU_H_INCLUDED

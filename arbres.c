@@ -1,3 +1,5 @@
+#ifndef ARBRES_C_INCLUDED
+#define ARBRES_C_INCLUDED
 #include <stdio.h>
 #include <stdlib.h>
 #include "arbres.h"
@@ -111,3 +113,5 @@ void afficher(Arbre* a) {
     }
 
 }
+
+#endif // ARBRES_C_INCLUDED

@@ -1,9 +1,10 @@
+#ifndef FONCTION_EVALUATION_C_INCLUDED
+#define FONCTION_EVALUATION_C_INCLUDED
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include "fonction_evaluation.h"
 #include "plateau.h"
-#include "plateau.c"
 
 
 //Fonction d'evaluation finale
@@ -422,3 +423,4 @@ int evaluerDominationTerritoire(Plateau* p, Joueur joueur) {
 
 }
 
+#endif // FONCTION_EVALUATION_C_INCLUDED
