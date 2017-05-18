@@ -3,7 +3,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_mixer.h>
-#include "plateau.c"
+#include "min_max.c"
 #define Xplateau 25
 #define Yplateau 75
 #define TailleCase 100
@@ -19,7 +19,7 @@
 
 
 
-void free_Plateau(Plateau* p){
+void free_PlateauIA(Plateau* p){
 	int i;	
 
 	for (i=0;i<TailleMatrice;i++){
@@ -28,7 +28,8 @@ void free_Plateau(Plateau* p){
 }
 
 
-int dessiner(Plateau* p, SDL_Surface* ecran, SDL_Surface* pions[NbPions], SDL_Rect positionsPions[NbPions]){
+
+int dessinerIA(Plateau* p, SDL_Surface* ecran, SDL_Surface* pions[NbPions], SDL_Rect positionsPions[NbPions]){
 
 	int i=0;
 
@@ -60,13 +61,14 @@ int dessiner(Plateau* p, SDL_Surface* ecran, SDL_Surface* pions[NbPions], SDL_Re
 
 
 
-int jeu(){
+int jeuIA(){
 
 int i=0;
 
+int compteur=0;
 int continuer=1;
 
-Joueur j= JOUEUR_BLANC;
+Joueur j= JOUEUR_NOIR;
 
 int depart;
 int arrivee;
@@ -119,7 +121,7 @@ initialiser_plateau(&pla);
 
 
 
-	dessiner(&pla,ecran,pions, positionsPions);
+	dessinerIA(&pla,ecran,pions, positionsPions);
 
 	
     SDL_Init(SDL_INIT_VIDEO);// Initialisation de la SDL
@@ -158,7 +160,9 @@ initialiser_plateau(&pla);
 
 		SDL_BlitSurface(imageDeFond,NULL,ecran,&positionImage); // on Blit toutes les images nécessaires à l'affichage du plateau de jeu
 
-		SDL_BlitSurface(plateau,NULL,ecran,&positionPlateau);	
+		SDL_BlitSurface(plateau,NULL,ecran,&positionPlateau);
+
+		SDL_Flip(ecran);	
 
 
 
@@ -168,8 +172,18 @@ initialiser_plateau(&pla);
 
     SDL_Event event;
  
-    while (continuer)
-    {
+    while (continuer){
+
+
+
+		if(j==JOUEUR_NOIR){
+
+			min_max(&pla,2,j);
+			j=JOUEUR_BLANC;
+		}
+
+
+
         SDL_WaitEvent(&event); // on attend qu'un évènement se passe
 
         switch(event.type)
@@ -193,7 +207,7 @@ initialiser_plateau(&pla);
 						Mix_PauseMusic();		
 
 					}
-		
+			
 					break;
 
 				}
@@ -214,10 +228,7 @@ initialiser_plateau(&pla);
 
 					if (j== JOUEUR_BLANC){  // on passe au joueur suivant
 						j= JOUEUR_NOIR;
-					}else{
-						j= JOUEUR_BLANC;
 					}
-		
 					printf("%d\n",j);
 				}
 
@@ -228,7 +239,7 @@ initialiser_plateau(&pla);
 
 				SDL_BlitSurface(plateau,NULL,ecran,&positionPlateau);	
 
-				dessiner(&pla, ecran, pions, positionsPions); // on rdéfini  les coordonnées des pions en fonction de leur place dans la matrice de contrôle.
+				dessinerIA(&pla, ecran, pions, positionsPions); // on rdéfini  les coordonnées des pions en fonction de leur place dans la matrice de contrôle.
 
 
 				break;
@@ -246,7 +257,7 @@ initialiser_plateau(&pla);
 			    SDL_Flip(ecran); // on met à jour l'écran
 
 
-	
+		
     }
 
 
@@ -275,7 +286,7 @@ initialiser_plateau(&pla);
  
     return EXIT_SUCCESS; // Fermeture du programme
 
-	free_Plateau(&pla);
+	free_PlateauIA(&pla);
 
 }
 

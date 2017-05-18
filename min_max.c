@@ -5,13 +5,15 @@
 #include <time.h>
 #include "min_max.h"
 #include "arbres.h"
+#include "arbres.c"
 #include "fonction_evaluation.h"
 #include "plateau.h"
 
 int INFINI = 100 ;
 
 Plateau* min_max(Plateau *p, int profondeur, Joueur joueur) {
-
+	
+	printf("d");
     //on aura recours à la méthode rand()
     srand(time(NULL)) ;
 
@@ -51,8 +53,7 @@ Plateau* min_max(Plateau *p, int profondeur, Joueur joueur) {
         }
     }
 
-    afficher(a) ;
-    printf("Taille : %d\nHauteur : %d", taille(a), hauteur(a)) ;
+	printf("f");
     //on joue le meilleur coup !
     return deplacer_piece(p, joueur, meilleur_coup.depart, meilleur_coup.arrivee) ;
 }

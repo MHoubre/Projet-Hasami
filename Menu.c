@@ -3,6 +3,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include "version_essai.c"
+#include "1VIA.c"
 
 
 int main(){
@@ -77,7 +78,8 @@ int continuer=1;
 				if(event.button.y >= positionBouton.y && event.button.y <= positionBouton.y+59 && event.button.x >= positionBouton.x && event.button.x <= positionBouton.x + 110){ // si on fait un clic gauche, on prend les coordonnées du curseur pour savoir quel pion déplacer
 					continuer=0;					
 					SDL_Quit();
-					jeu();
+
+					jeuIA();
 
 				}
 
