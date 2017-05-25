@@ -14,22 +14,28 @@ int continuer=1;
     ecranMenu= SDL_SetVideoMode(1920, 1080, 32, SDL_HWSURFACE|SDL_RESIZABLE); // chargement d'une fenêtre dans l'espace écran
 
 	SDL_Surface *imageDeFond=NULL;
-	SDL_Surface *Bouton=NULL;
+	SDL_Surface *Bouton1=NULL;
+	SDL_Surface *Bouton2=NULL;
 
 	SDL_Rect positionImage;
-	SDL_Rect positionBouton;
+	SDL_Rect positionBouton1;
+	SDL_Rect positionBouton2;
 
 	positionImage.x=0; // Positions d'ancrage de l'image de fond
 	positionImage.y=0; 
 
-	positionBouton.x=1300;
-	positionBouton.y=200;
+	positionBouton1.x=1300;
+	positionBouton1.y=200;
+	positionBouton2.x=1500;
+	positionBouton2.y=200;
 
     SDL_Init(SDL_INIT_VIDEO);// Initialisation de la SDL
 
 
 	imageDeFond= IMG_Load("menu.jpg");
-	Bouton= IMG_Load("bouton1.png");
+	Bouton1= IMG_Load("1V1.png");
+
+	Bouton2= IMG_Load("IA.png");
 
 	if(ecranMenu==NULL){
 		printf("Erreur de chargement du mode vidéo %s\n", SDL_GetError());
@@ -40,7 +46,8 @@ int continuer=1;
 	SDL_WM_SetCaption("Watashi no Hasami Shogi", NULL);
 
 	SDL_BlitSurface(imageDeFond,NULL,ecranMenu,&positionImage); // on Blit toutes les images nécessaires à l'affichage du plateau de jeu
-	SDL_BlitSurface(Bouton,NULL,ecranMenu, &positionBouton);
+	SDL_BlitSurface(Bouton1,NULL,ecranMenu, &positionBouton1);
+	SDL_BlitSurface(Bouton2,NULL, ecranMenu, &positionBouton2);
 
 	SDL_Flip(ecranMenu);
 	
@@ -59,30 +66,49 @@ int continuer=1;
 				break;
 
 			case SDL_MOUSEMOTION:
-				if(event.motion.y >= positionBouton.y && event.motion.y <= positionBouton.y+59 && event.motion.x >= positionBouton.x && event.motion.x <= positionBouton.x + 110){
+				if(event.motion.y >= positionBouton1.y && event.motion.y <= positionBouton1.y+59 && event.motion.x >= positionBouton1.x && event.motion.x <= positionBouton1.x + 110){
 
-						Bouton= IMG_Load("bouton2.png");
+						Bouton1= IMG_Load("1V1_enfonce.png");
 
-						SDL_BlitSurface(Bouton,NULL,ecranMenu, &positionBouton);
+						SDL_BlitSurface(Bouton1,NULL,ecranMenu, &positionBouton1);
 						SDL_Flip(ecranMenu);
 						break;
-				}else{
-						Bouton= IMG_Load("bouton1.png");
+				
+				}else if(event.motion.y >= positionBouton2.y && event.motion.y <= positionBouton2.y+59 && event.motion.x >= positionBouton2.x && event.motion.x <= positionBouton2.x + 110){
 
-						SDL_BlitSurface(Bouton,NULL,ecranMenu, &positionBouton);
+
+						Bouton2= IMG_Load("IA_enfonce.png");
+						SDL_BlitSurface(Bouton2,NULL,ecranMenu, &positionBouton2);
+						SDL_Flip(ecranMenu);
+						break;
+
+
+				}else{
+						Bouton1= IMG_Load("1V1.png");
+						Bouton2= IMG_Load("IA.png");
+
+						SDL_BlitSurface(Bouton1,NULL,ecranMenu, &positionBouton1);
+						SDL_BlitSurface(Bouton2,NULL,ecranMenu, &positionBouton2);
 						SDL_Flip(ecranMenu);
 
 				}
 
 			case SDL_MOUSEBUTTONDOWN:
-				if(event.button.y >= positionBouton.y && event.button.y <= positionBouton.y+59 && event.button.x >= positionBouton.x && event.button.x <= positionBouton.x + 110){ // si on fait un clic gauche, on prend les coordonnées du curseur pour savoir quel pion déplacer
+				if(event.button.y >= positionBouton1.y && event.button.y <= positionBouton1.y+59 && event.button.x >= positionBouton1.x && event.button.x <= positionBouton1.x + 110){ // si on fait un clic gauche, on prend les coordonnées du curseur pour savoir quel pion déplacer
+					continuer=0;					
+					SDL_Quit();
+
+					jeu();
+
+				}else if(event.button.y >= positionBouton2.y && event.button.y <= positionBouton2.y+59 && event.button.x >= positionBouton2.x && event.button.x <= positionBouton2.x + 110){
+
 					continuer=0;					
 					SDL_Quit();
 
 					jeuIA();
 
-				}
 
+				}
 
 		}
 
@@ -91,6 +117,7 @@ int continuer=1;
  
 
 	SDL_FreeSurface(imageDeFond);
-	SDL_FreeSurface(Bouton);
+	SDL_FreeSurface(Bouton1);
+	SDL_FreeSurface(Bouton2);
 
 }

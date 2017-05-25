@@ -4,60 +4,8 @@
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_mixer.h>
 #include "min_max.c"
-#define Xplateau 25
-#define Yplateau 75
-#define TailleCase 100
-#define TailleMatrice 81
-#define NbPions 36
-#define TailleLigne 9
-#define NbLignes 8
-#define NbPions  36
-#define UneLigne 9
-#define DeuxLignes 18
+#include "plateau.c"
 
-
-
-
-
-void free_PlateauIA(Plateau* p){
-	int i;	
-
-	for (i=0;i<TailleMatrice;i++){
-		free(&(p->cases[i]));
-	}
-}
-
-
-
-int dessinerIA(Plateau* p, SDL_Surface* ecran, SDL_Surface* pions[NbPions], SDL_Rect positionsPions[NbPions]){
-
-	int i=0;
-
-	int compteur=0;	//constante qui servira pour la recherche des coeff du plateau et le tracé des pions.
-
-
-	for(i=0;i<81;i++){
-
-		if(p->cases[i]==NOIR){
-			pions[compteur]=IMG_Load("noire_transparent.png");
-			positionsPions[compteur].x=((i%9)*100)+Xplateau+5;
-			positionsPions[compteur].y=((i/9)*100)+Yplateau+5;
-			compteur++;
-//			printf("%d\n",compteur);
-		}
-
-		if(p->cases[i]==BLANC){
-			pions[compteur]=IMG_Load("blanche_transparent.png");
-			positionsPions[compteur].x=((i%9)*100)+Xplateau+5;
-			positionsPions[compteur].y=((i/9)*100)+Yplateau+5;
-			compteur++;
-//			printf("%d\n",compteur);
-		}
-
-	}
-
-
-}
 
 
 
@@ -121,7 +69,7 @@ initialiser_plateau(&pla);
 
 
 
-	dessinerIA(&pla,ecran,pions, positionsPions);
+	dessiner(&pla,ecran,pions, positionsPions);
 
 	
     SDL_Init(SDL_INIT_VIDEO);// Initialisation de la SDL
@@ -239,7 +187,7 @@ initialiser_plateau(&pla);
 
 				SDL_BlitSurface(plateau,NULL,ecran,&positionPlateau);	
 
-				dessinerIA(&pla, ecran, pions, positionsPions); // on rdéfini  les coordonnées des pions en fonction de leur place dans la matrice de contrôle.
+				dessiner(&pla, ecran, pions, positionsPions); // on rdéfini  les coordonnées des pions en fonction de leur place dans la matrice de contrôle.
 
 
 				break;
@@ -286,7 +234,7 @@ initialiser_plateau(&pla);
  
     return EXIT_SUCCESS; // Fermeture du programme
 
-	free_PlateauIA(&pla);
+	free_Plateau(&pla);
 
 }
 
