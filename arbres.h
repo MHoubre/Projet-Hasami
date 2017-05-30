@@ -19,5 +19,6 @@ int hauteur(Arbre* a) ;
 Arbre* ajouter_fils(Arbre* a, Coup coup, int valeur) ;
 Arbre* ajouter_frere(Arbre* a, Coup coup, int valeur) ;
 void afficher(Arbre* a) ;
+void free_arbre(Arbre* a);
 
 #endif // ARBRES_H_INCLUDED

@@ -114,4 +114,20 @@ void afficher(Arbre* a) {
 
 }
 
+
+//On libère l'espace mémoire occupé par un arbre
+void free_arbre(Arbre* a) {
+
+    if (a->fils != NULL) {
+        free_arbre(a->fils);
+    }
+    if (a->frere != NULL) {
+       free_arbre(a->frere);
+    }
+
+    free(&(a->coup));
+    free(&(a->valeur));
+
+}
+
 #endif // ARBRES_C_INCLUDED
