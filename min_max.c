@@ -8,6 +8,7 @@
 #include "arbres.c"
 #include "fonction_evaluation.h"
 #include "plateau.h"
+#include "plateau.c"
 
 int INFINI = 100 ;
 
