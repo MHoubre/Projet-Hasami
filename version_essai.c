@@ -6,7 +6,6 @@
 #include "plateau.c"
 
 
-
 int jeu(){
 
 int i=0;
@@ -159,13 +158,14 @@ initialiser_plateau(&pla);
 
 					deplacer_piece(&pla, j, depart,arrivee); // on déplace la pièce dans la matrice
 
+
+
 					if (j== JOUEUR_BLANC){  // on passe au joueur suivant
 						j= JOUEUR_NOIR;
 					}else{
 						j= JOUEUR_BLANC;
 					}
 		
-					printf("%d\n",j);
 				}
 
 				
@@ -177,6 +177,7 @@ initialiser_plateau(&pla);
 
 				dessiner(&pla, ecran, pions, positionsPions); // on rdéfini  les coordonnées des pions en fonction de leur place dans la matrice de contrôle.
 
+				gagnant(&pla);
 
 				break;
 

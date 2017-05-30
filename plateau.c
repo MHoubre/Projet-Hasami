@@ -14,9 +14,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <SDL/SDL_image.h>
-#include <SDL/SDL_mixer.h>
 #include "plateau.h"
-#include "fonction_evaluation.h"
+
 
 
 void initialiser_plateau(Plateau* p) {
@@ -54,17 +53,6 @@ Plateau* deplacer_piece(Plateau* p, Joueur j, int depart, int arrivee) { //dépla
     }
 }
 
-
-
-Joueur switchJoueur(Joueur* j){
-
-	if (*j == JOUEUR_NOIR){
-		*j= JOUEUR_BLANC;
-	}else{
-		*j= JOUEUR_NOIR;
-	}
-
-}
 
 
 void free_Plateau(Plateau* p){
@@ -371,13 +359,55 @@ Plateau* manger(Plateau* p, Joueur joueur, int depart, int arrivee) {
 }
 
 
+void pause(SDL_Surface* ecran, SDL_Surface* image){
+    int continuer_fin = 1;
+    SDL_Event event_fin;
+ 
+    while (continuer_fin)
+    {
+        SDL_WaitEvent(&event_fin);
+        switch(event_fin.type)
+        {
+            case SDL_QUIT:
+
+
+                continuer_fin = 0;
+        }
+    }
+
+				SDL_FreeSurface(ecran);
+				SDL_FreeSurface(image);
+
+	SDL_Quit();	
+
+}
+
+
 //on renvoie -1 s'il n'y a pas de gagnant, sinon l'entier correspondant
 //au joueur qui gagne la partie
 int gagnant(Plateau* p) {
 
+	SDL_Surface *ecranFin=NULL;
+	SDL_Surface *imageFin=NULL;
+
+	SDL_Rect position;
+	
+	position.x=0;
+	position.y=0;
+
     //si le joueur blanc a 1 ou 0 pion, il a perdu
     int nb_blanc = nombreDePions(p, JOUEUR_BLANC) ;
     if (nb_blanc<2) {
+			
+		ecranFin= SDL_SetVideoMode(500, 250, 32, SDL_HWSURFACE); 
+		imageFin=IMG_Load("zen_N.png");
+
+		SDL_BlitSurface(imageFin,NULL,ecranFin,&position);
+
+		SDL_Flip(ecranFin);
+
+		pause(ecranFin,imageFin);
+
         return JOUEUR_NOIR ;
     }
 
@@ -385,6 +415,16 @@ int gagnant(Plateau* p) {
         //si le joueur noir a 1 ou 0 pion, il a perdu
         int nb_noir = nombreDePions(p, JOUEUR_NOIR) ;
         if (nb_noir<2) {
+			
+			ecranFin= SDL_SetVideoMode(500, 250, 32, SDL_HWSURFACE); 
+			imageFin=IMG_Load("zen_B.png");
+
+			SDL_BlitSurface(imageFin,NULL,ecranFin,&position);
+
+			SDL_Flip(ecranFin);
+
+			pause(ecranFin,imageFin);
+
             return JOUEUR_BLANC ;
         }
 
@@ -417,10 +457,31 @@ int gagnant(Plateau* p) {
             }
 
             if (gagnant_blanc==1) {
+
+			ecranFin= SDL_SetVideoMode(500, 250, 32, SDL_HWSURFACE); 
+			imageFin=IMG_Load("zen_B.png");
+
+			SDL_BlitSurface(imageFin,NULL,ecranFin,&position);
+	
+			SDL_Flip(ecranFin);
+
+			pause(ecranFin, imageFin);
+
+
                 return JOUEUR_BLANC ;
             }
             else {
                 if (gagnant_noir==1) {
+
+			ecranFin= SDL_SetVideoMode(500, 250, 32, SDL_HWSURFACE); 
+			imageFin=IMG_Load("zen_N.png");
+
+			SDL_BlitSurface(imageFin,NULL,ecranFin,&position);
+	
+			SDL_Flip(ecranFin);
+
+			pause(ecranFin, imageFin);
+
                     return JOUEUR_NOIR ;
                 }
                 else {
@@ -878,6 +939,10 @@ int evaluerDominationTerritoire(Plateau* p, Joueur joueur) {
         return zonesN-zonesB ;
     }
 
+
+}
+
+int main(){
 
 }
 
