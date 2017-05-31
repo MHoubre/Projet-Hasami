@@ -337,7 +337,7 @@ Plateau* manger(Plateau* p, Joueur joueur, int depart, int arrivee) {
         }
 
         //il y a-t-il une pièce adverse en haut ?
-        if (arrivee-18>0 && (*p).cases[arrivee-1]==((joueur+1)%2)+1) {
+        if (arrivee-18>0 && (*p).cases[arrivee-9]==((joueur+1)%2)+1) {
             int i = arrivee-9 ;
             //tant qu'il y a des pièces du joueur adverse alignées, on continue
             while (i>0 && (*p).cases[i]==((joueur+1)%2)+1) {
@@ -942,8 +942,5 @@ int evaluerDominationTerritoire(Plateau* p, Joueur joueur) {
 
 }
 
-int main(){
-
-}
 
 #endif // FONCTION_EVALUATION_C_INCLUDED

@@ -1,5 +1,6 @@
 #ifndef PLATEAU_H_INCLUDED
 #define PLATEAU_H_INCLUDED
+#define NbPions 36
 
 typedef enum Joueur {
     JOUEUR_BLANC, JOUEUR_NOIR
